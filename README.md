@@ -1,4 +1,5 @@
 # hm_shop
+<<<<<<< HEAD
 
 A new Flutter project.
 
@@ -15,3 +16,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+基于Flutter开发的APP
+>>>>>>> 37e46fec105a168982a9fa95c4b4eb0edcc67d46
