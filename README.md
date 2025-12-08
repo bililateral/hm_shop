@@ -42,7 +42,7 @@
    bash
 
    ```
-   git clone <项目仓库地址>
+   git clone https://github.com/bililateral/hm_shop.git
    cd hm_shop
    ```
 
