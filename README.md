@@ -1,21 +1,252 @@
-# hm_shop
-<<<<<<< HEAD
+# 惠多美商城 - Flutter 电商应用
 
-A new Flutter project.
+## 📱 项目简介
 
-## Getting Started
+本项目是一个基于 Flutter 开发的电商类移动应用，包含首页、分类、购物车、个人中心等核心模块。实现了商品展示、用户登录、个人信息管理等基础功能。项目采用 **MVVM 架构** 思想，结合 **GetX** 进行状态管理，**Dio** 处理网络请求，实现了一套结构清晰、易于维护的移动电商解决方案。
 
-This project is a starting point for a Flutter application.
+------
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ 核心功能
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- **首页商品展示**（轮播图、分类导航、特惠推荐、爆款商品）
+- **用户登录 / 退出功能**
+- **个人中心信息展示**
+- **商品推荐列表**（支持下拉刷新、上拉加载）
+- **底部导航切换**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-基于Flutter开发的APP
->>>>>>> 37e46fec105a168982a9fa95c4b4eb0edcc67d46
+------
+
+## 🛠 技术栈
+
+- **框架**：Flutter
+- **状态管理**：GetX
+- **网络请求**：Dio
+- **本地存储**：SharedPreferences（用于 Token 管理）
+- **路由管理**：Flutter 原生路由
+
+------
+
+## 🚀 运行方法
+
+### 环境要求
+
+- Flutter 3.0+
+- Dart 2.17+
+- Android Studio / Xcode（对应平台开发工具）
+- 模拟器或真实设备
+
+### 步骤
+
+1. **克隆项目**
+
+   bash
+
+   ```
+   git clone <项目仓库地址>
+   cd hm_shop
+   ```
+
+   
+
+2. **安装依赖**
+
+   bash
+
+   ```
+   flutter pub get
+   ```
+
+   
+
+3. **配置环境**（可选）
+   若 API 接口地址需要修改，可编辑 `lib/constants/index.dart` 文件中的 `BASE_URL`：
+
+   dart
+
+   ```
+   class GlobalConstants {
+     static const String BASE_URL = "你的API基础地址"; // 修改为实际可用的API地址
+     // ...其他配置
+   }
+   ```
+
+   
+
+4. **运行项目**
+
+   - 连接设备或启动模拟器
+
+   - 执行运行命令：
+
+     bash
+
+     ```
+     flutter run
+     ```
+
+     
+
+------
+
+## 📄 关键页面实现说明
+
+### 1. 主页面（MainPage）
+
+- **路径**：`lib/pages/Main/index.dart`
+
+- **功能**：作为应用入口，管理底部导航和页面切换
+
+- **核心实现**：
+
+  - 使用 `IndexedStack` 管理首页、分类、购物车、我的四个页面，保持页面状态
+  - 底部导航通过 `BottomNavigationBar` 实现，通过 `_currentIndex` 控制选中状态
+  - 初始化时通过 `tokenManager` 检查登录状态，自动获取用户信息
+
+  dart
+
+  ```
+  // 页面切换核心代码
+  body: SafeArea(
+    child: IndexedStack(index: _currentIndex, children: _getChildren()),
+  ),
+  bottomNavigationBar: BottomNavigationBar(
+    onTap: (value) {
+      _currentIndex = value;
+      setState(() {});
+    },
+    // ...其他配置
+  ),
+  ```
+
+  
+
+### 2. 首页（HomeView）
+
+- **路径**：`lib/pages/Home/index.dart`
+
+- **功能**：展示商品轮播图、分类导航、特惠推荐等内容
+
+- **核心实现**：
+
+  - 使用 `CustomScrollView` 实现滚动布局，包含多个 Sliver 组件
+  - 下拉刷新通过 `RefreshIndicator` 实现，重置数据并重新请求
+  - 上拉加载通过 `ScrollController` 监听滚动事件，触发分页请求
+  - 数据渲染：轮播图（HmSlider）、分类导航（HmCategory）、推荐列表（HmMoreList）
+
+  dart
+
+  ```
+  // 下拉刷新核心代码
+  return RefreshIndicator(
+    onRefresh: () async {
+      _page = 1;
+      _isLoading = false;
+      _hasMore = true;
+      await _getBannerList();
+      // ...重新加载其他数据
+    },
+    child: CustomScrollView(
+      controller: _controller,
+      slivers: _getScrollChildren(),
+    ),
+  );
+  ```
+
+  
+
+### 3. 登录页（LoginPage）
+
+- **路径**：`lib/pages/Login/index.dart`
+
+- **功能**：用户账号密码登录
+
+- **核心实现**：
+
+  - 使用 `Form` 组件进行表单验证，校验手机号和密码格式
+  - 登录逻辑：通过 `loginAPI` 提交账号密码，成功后保存 Token 并更新用户信息
+  - 使用 `LoadingDialog` 展示登录加载状态，通过 `ScaffoldMessenger` 显示提示信息
+  - 勾选用户协议验证，未勾选时阻止登录
+
+  dart
+
+  ```
+  // 登录核心代码
+  void _login() async {
+    try {
+      LoadingDialog.show(context, message: "正在登录,请稍候");
+      final res = await loginAPI({
+        "account": _phoneController.text,
+        "password": _codeController.text,
+      });
+      _userController.updateUserInfo(res); // 更新用户信息
+      tokenManager.setToken(res.token); // 保存Token
+      LoadingDialog.hide(context);
+      // 登录成功提示并返回
+    } catch (e) {
+      // 错误处理
+    }
+  }
+  ```
+
+  
+
+### 4. 个人中心（MineView）
+
+- **路径**：`lib/pages/My/index.dart`
+
+- **功能**：展示用户信息、提供退出登录等功能
+
+- **核心实现**：
+
+  - 使用 `Obx` 监听用户信息变化，实现响应式 UI 更新
+  - 退出登录：清除 Token、重置用户信息，通过对话框确认操作
+  - 猜你喜欢列表：支持上拉加载更多，通过 `ScrollController` 实现分页
+  - 用户信息展示：根据登录状态显示 “立即登录” 或用户名 / 头像
+
+  dart
+
+  ```
+  // 退出登录核心代码
+  onPressed: () async {
+    await tokenManager.removeToken(); // 清除Token
+    _userController.updateUserInfo(UserInfo.fromJSON({})); // 重置用户信息
+    Navigator.pop(context);
+    setState(() {});
+  },
+  ```
+
+  
+
+------
+
+## 📁 项目结构说明
+
+text
+
+```
+lib/
+├── api/            # 网络请求接口封装
+├── components/     # 通用组件
+├── constants/      # 常量定义（API地址、配置等）
+├── pages/          # 页面组件
+│   ├── Main/       # 主页面（底部导航）
+│   ├── Home/       # 首页
+│   ├── Category/   # 分类页
+│   ├── Cart/       # 购物车
+│   ├── My/         # 个人中心
+│   └── Login/      # 登录页
+├── routes/         # 路由配置
+├── stores/         # 状态管理（Token、用户信息）
+├── utils/          # 工具类（Dio封装等）
+└── viewmodels/     # 数据模型定义
+```
+
+
+
+------
+
+## ⚠️ 注意事项
+
+- 项目中部分 API 地址可能无法访问，实际使用时需替换为可用接口
+- 图片资源路径基于项目实际结构，若修改资源位置需同步更新引用路径
+- 状态管理依赖 GetX，需确保相关 Controller 已正确初始化（Get.put/Get.find）
