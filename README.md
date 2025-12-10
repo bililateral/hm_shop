@@ -16,6 +16,22 @@
 
 ------
 
+## 📸 项目成果图
+
+- 首页
+
+  ![](https://github.com/user-attachments/assets/b30a156e-c5b4-40fb-9c20-ac4958023b62)
+
+
+
+- 个人中心页面
+
+
+
+![](https://github.com/user-attachments/assets/b3887e35-8bc0-4fe2-9836-f054ba2a46cc)
+
+------
+
 ## 🛠 技术栈
 
 - **框架**：Flutter
@@ -41,6 +57,8 @@
 
    bash
 
+   text
+
    ```
    git clone https://github.com/bililateral/hm_shop.git
    cd hm_shop
@@ -52,6 +70,8 @@
 
    bash
 
+   text
+
    ```
    flutter pub get
    ```
@@ -62,6 +82,8 @@
    若 API 接口地址需要修改，可编辑 `lib/constants/index.dart` 文件中的 `BASE_URL`：
 
    dart
+
+   text
 
    ```
    class GlobalConstants {
@@ -79,6 +101,8 @@
    - 执行运行命令：
 
      bash
+
+     text
 
      ```
      flutter run
@@ -103,6 +127,8 @@
   - 初始化时通过 `tokenManager` 检查登录状态，自动获取用户信息
 
   dart
+
+  text
 
   ```
   // 页面切换核心代码
@@ -134,6 +160,8 @@
   - 数据渲染：轮播图（HmSlider）、分类导航（HmCategory）、推荐列表（HmMoreList）
 
   dart
+
+  text
 
   ```
   // 下拉刷新核心代码
@@ -168,6 +196,8 @@
   - 勾选用户协议验证，未勾选时阻止登录
 
   dart
+
+  text
 
   ```
   // 登录核心代码
@@ -205,6 +235,8 @@
 
   dart
 
+  text
+
   ```
   // 退出登录核心代码
   onPressed: () async {
@@ -220,6 +252,8 @@
 ------
 
 ## 📁 项目结构说明
+
+text
 
 text
 
