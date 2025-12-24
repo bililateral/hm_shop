@@ -55,56 +55,40 @@
 
 1. **克隆项目**
 
-   bash
-
-   text
-
-   ```
+   ```bash
    git clone https://github.com/bililateral/hm_shop.git
    cd hm_shop
    ```
-
    
-
+   
+   
 2. **安装依赖**
 
-   bash
-
-   text
-
-   ```
+   ```bash
    flutter pub get
    ```
 
    
-
+   
 3. **配置环境**（可选）
    若 API 接口地址需要修改，可编辑 `lib/constants/index.dart` 文件中的 `BASE_URL`：
 
-   dart
-
-   text
-
-   ```
+   ```dart
    class GlobalConstants {
      static const String BASE_URL = "你的API基础地址"; // 修改为实际可用的API地址
      // ...其他配置
    }
    ```
-
    
-
+   
+   
 4. **运行项目**
 
    - 连接设备或启动模拟器
 
    - 执行运行命令：
 
-     bash
-
-     text
-
-     ```
+     ```bash
      flutter run
      ```
 
@@ -126,11 +110,7 @@
   - 底部导航通过 `BottomNavigationBar` 实现，通过 `_currentIndex` 控制选中状态
   - 初始化时通过 `tokenManager` 检查登录状态，自动获取用户信息
 
-  dart
-
-  text
-
-  ```
+  ```dart
   // 页面切换核心代码
   body: SafeArea(
     child: IndexedStack(index: _currentIndex, children: _getChildren()),
@@ -143,7 +123,7 @@
     // ...其他配置
   ),
   ```
-
+  
   
 
 ### 2. 首页（HomeView）
@@ -159,11 +139,7 @@
   - 上拉加载通过 `ScrollController` 监听滚动事件，触发分页请求
   - 数据渲染：轮播图（HmSlider）、分类导航（HmCategory）、推荐列表（HmMoreList）
 
-  dart
-
-  text
-
-  ```
+  ```dart
   // 下拉刷新核心代码
   return RefreshIndicator(
     onRefresh: () async {
@@ -179,7 +155,7 @@
     ),
   );
   ```
-
+  
   
 
 ### 3. 登录页（LoginPage）
@@ -195,11 +171,7 @@
   - 使用 `LoadingDialog` 展示登录加载状态，通过 `ScaffoldMessenger` 显示提示信息
   - 勾选用户协议验证，未勾选时阻止登录
 
-  dart
-
-  text
-
-  ```
+  ```dart
   // 登录核心代码
   void _login() async {
     try {
@@ -217,7 +189,7 @@
     }
   }
   ```
-
+  
   
 
 ### 4. 个人中心（MineView）
@@ -233,11 +205,7 @@
   - 猜你喜欢列表：支持上拉加载更多，通过 `ScrollController` 实现分页
   - 用户信息展示：根据登录状态显示 “立即登录” 或用户名 / 头像
 
-  dart
-
-  text
-
-  ```
+  ```dart
   // 退出登录核心代码
   onPressed: () async {
     await tokenManager.removeToken(); // 清除Token
@@ -246,16 +214,12 @@
     setState(() {});
   },
   ```
-
+  
   
 
 ------
 
 ## 📁 项目结构说明
-
-text
-
-text
 
 ```
 lib/
